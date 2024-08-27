@@ -2,25 +2,10 @@
 #include <QString>
 #include <QFile>
 #include <QFileInfo>
+#include <sstream>
 
 InterpolatedData::InterpolatedData() {}
 
-void InterpolatedData::save_data(const QString& filename)
-{
-    QFile outfile{filename};
-
-    if (!outfile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "not file\n";
-        return;
-    }
-
-    qDebug() << "tmedata size is " << TimeData.size();
-    QTextStream out(&outfile);
-
-    for (int i = 0; i < TimeData.size(); i++) {
-        out << SerialNo << ", " << TimeData[i].toString("yyyy-MM-dd HH:mm") << ", " << QString::number(ImportData[i], 'f', 2) << ", " << QString::number(ExportData[i], 'f', 2) << '\n';
-    }
-}
 
 static std::vector<std::string> split_csv_line(const QByteArray& line)
 {
@@ -138,8 +123,6 @@ bool RawData::import_csv_data(const QString& csvfile_path)
         csvExport.push_back(std::stod(data[indices[3]]));
     }
 
-    qDebug() << "csv time size is " << csvTime.size();
-
     return true;
 }
 
@@ -148,8 +131,6 @@ bool InterpolatedData::interpolate_csv_data()
     QDateTime csv_start_time = *csvData.csvTime.begin();
     QDateTime csv_end_time = *(csvData.csvTime.end() - 1);
     QDateTime time = get_start_time(csv_start_time);
-
-    qDebug() << csv_start_time << "\t" << csv_end_time << "\t" << time;
 
     while (time < csv_end_time) {
         bool perfect_time = false;
@@ -175,7 +156,48 @@ bool InterpolatedData::interpolate_csv_data()
         time = time.addSecs(half_hour());
     }
 
-    qDebug() << "interpolated time size is " << TimeData.size();
-
     return true;
+}
+
+
+void InterpolatedData::save_data(const QString& filename)
+{
+    QFile outfile{filename};
+    if (!outfile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Error: could not open file " << filename;
+        return;
+    }
+
+    QTextStream outstream(&outfile);
+    outstream << "Serial Number, Date, Import, Export\n";
+
+    for (int i = 0; i < TimeData.size(); i++) {
+        outstream << SerialNo << ", "
+                  << TimeData[i].toString("yyyy-MM-dd HH:mm") << ", "
+                  << QString::number(ImportData[i], 'f', 2) << ", "
+                  << QString::number(ExportData[i], 'f', 2) << '\n';
+    }
+}
+
+
+void InterpolatedData::save_daily_data(const QString& filename)
+{
+    QFile outfile{filename};
+    if (!outfile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Error: could not open file " << filename;
+        return;
+    }
+
+    QTextStream outstream(&outfile);
+    outstream << "Serial Number, Date, Import, Export\n";
+
+    for (int i = 0; i < TimeData.size(); i++) {
+        if (TimeData[i].time() == QTime::fromMSecsSinceStartOfDay(0)) {
+            QDateTime datetime = TimeData[i].addMSecs(-1);
+            outstream << SerialNo << ", "
+                      << datetime.toString("yyyy-MM-dd HH:mm:ss") << ", "
+                      << QString::number(ImportData[i], 'f', 2) << ", "
+                      << QString::number(ExportData[i], 'f', 2) << '\n';
+        }
+    }
 }

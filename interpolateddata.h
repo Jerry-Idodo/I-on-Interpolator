@@ -37,6 +37,7 @@ public:
     RawData csvData;
     bool interpolate_csv_data();
     void save_data(const QString& filename);
+    void save_daily_data(const QString& filename);
 };
 
 #endif // INTERPOLATEDDATA_H

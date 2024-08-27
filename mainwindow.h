@@ -27,6 +27,8 @@ private slots:
 
     void on_SaveInterpolatedDataButton_clicked();
 
+    void on_SaveDailyDataButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString csvfile_path;

@@ -77,3 +77,12 @@ void MainWindow::on_SaveInterpolatedDataButton_clicked()
     show_message("Data Interpolated Saved!");
 }
 
+
+void MainWindow::on_SaveDailyDataButton_clicked()
+{
+    QString dailyfile{fileinfo.completeBaseName() + "_daily.csv"};
+    csvData.save_daily_data(fileinfo.absolutePath() + "/" + dailyfile);
+    ui->DailyDataLabel->setText(dailyfile);
+    show_message("Daily Data Saved!");
+}
+

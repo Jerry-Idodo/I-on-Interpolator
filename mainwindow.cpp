@@ -25,7 +25,6 @@ void show_message(const QString text)
     msgBox.exec();
 }
 
-
 QString pick_file()
 {
     QString filename = QFileDialog::getOpenFileName(nullptr, "Open File",
@@ -34,12 +33,24 @@ QString pick_file()
     return filename;
 }
 
+void MainWindow::clear_data()
+{
+    csvfile_path.clear();
+    csvData.clear();
+    hhData.clear();
+    ui->csvLabel->clear();
+    ui->ImportLabel->clear();
+    ui->ExportLabel->clear();
+    ui->InterpolatedLabel->clear();
+    ui->DailyDataLabel->clear();
+}
+
 void MainWindow::on_SelectInputButton_clicked()
 {
+    clear_data();
     csvfile_path = pick_file();
     fileinfo.setFile(csvfile_path);
-
-    ui->csvLabel->clear();
+    qDebug() << fileinfo.fileName();
     ui->csvLabel->setText(fileinfo.fileName());
 
     // Load Data
@@ -50,7 +61,6 @@ void MainWindow::on_SelectInputButton_clicked()
     }
 }
 
-
 void MainWindow::on_GenTableButton_clicked()
 {   
     // Interpolate Data
@@ -60,14 +70,16 @@ void MainWindow::on_GenTableButton_clicked()
     // Create HH Table
     hhData.create_hh_table(csvData);
     show_message("Table Created!");
+}
 
+void MainWindow::on_SaveHHTableButton_clicked()
+{
     // Save HH Table
-    hhData.save_hh_table(csvfile_path);  
+    hhData.save_hh_table(csvfile_path);
     ui->ImportLabel->setText(fileinfo.completeBaseName() + "_import.csv");
     ui->ExportLabel->setText(fileinfo.completeBaseName() + "_export.csv");
     show_message("File Saved");
 }
-
 
 void MainWindow::on_SaveInterpolatedDataButton_clicked()
 {
@@ -77,7 +89,6 @@ void MainWindow::on_SaveInterpolatedDataButton_clicked()
     show_message("Data Interpolated Saved!");
 }
 
-
 void MainWindow::on_SaveDailyDataButton_clicked()
 {
     QString dailyfile{fileinfo.completeBaseName() + "_daily.csv"};
@@ -85,4 +96,5 @@ void MainWindow::on_SaveDailyDataButton_clicked()
     ui->DailyDataLabel->setText(dailyfile);
     show_message("Daily Data Saved!");
 }
+
 

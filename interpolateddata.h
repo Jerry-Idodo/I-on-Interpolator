@@ -20,6 +20,7 @@ public:
     std::vector<double> csvExport;
 
     bool import_csv_data(const QString& csvfile_path);
+    void clear();
 
 };
 
@@ -38,6 +39,7 @@ public:
     bool interpolate_csv_data();
     void save_data(const QString& filename);
     void save_daily_data(const QString& filename);
+    void clear();
 };
 
 #endif // INTERPOLATEDDATA_H

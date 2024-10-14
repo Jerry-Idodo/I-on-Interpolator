@@ -28,6 +28,7 @@ public:
 
     bool create_hh_table (const InterpolatedData& HHData);
     bool save_hh_table (const QString& csvpath);
+    void clear();
 };
 
 #endif // HHTABLE_H

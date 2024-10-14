@@ -126,6 +126,14 @@ bool RawData::import_csv_data(const QString& csvfile_path)
     return true;
 }
 
+void RawData::clear()
+{
+    csvSerialNo.clear();
+    csvTime.clear();
+    csvImport.clear();
+    csvExport.clear();
+}
+
 bool InterpolatedData::interpolate_csv_data()
 {
     QDateTime csv_start_time = *csvData.csvTime.begin();
@@ -200,4 +208,13 @@ void InterpolatedData::save_daily_data(const QString& filename)
                       << QString::number(ExportData[i], 'f', 2) << '\n';
         }
     }
+}
+
+void InterpolatedData::clear()
+{
+    csvData.clear();
+    SerialNo.clear();
+    TimeData.clear();
+    ImportData.clear();
+    ExportData.clear();
 }

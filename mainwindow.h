@@ -21,6 +21,8 @@ public:
     ~MainWindow();
 
 private slots:
+    void clear_data();
+
     void on_SelectInputButton_clicked();
 
     void on_GenTableButton_clicked();
@@ -28,6 +30,8 @@ private slots:
     void on_SaveInterpolatedDataButton_clicked();
 
     void on_SaveDailyDataButton_clicked();
+
+    void on_SaveHHTableButton_clicked();
 
 private:
     Ui::MainWindow *ui;

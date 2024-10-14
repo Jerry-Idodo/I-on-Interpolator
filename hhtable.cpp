@@ -1,5 +1,6 @@
 #include "hhtable.h"
 #include <QFileInfo>
+#include <numeric>
 
 HHTable::HHTable() {}
 
@@ -86,7 +87,7 @@ QString HHTable::remove_file_extension(const QString& filePath)
 
 QString HHTable::print_header_row()
 {
-    QString out_string = "Date, Serial No, ";
+    QString out_string = "Date, Serial No, Total, ";
     QTime hh(0,0,0);
 
     for (int i = 0; i < 47; i++) {
@@ -102,11 +103,15 @@ QString HHTable::print_body_row(int index, const QString& energy_type)
     QString out_string = DataTable[index].date.toString("yyyy-MM-dd") + " ," + SerialNo + ", ";
 
     if (energy_type == "import") {
+        double sum = std::accumulate(DataTable[index].imports.begin(), DataTable[index].imports.end(), 0.0);
+        out_string += QString::number(sum, 'f', 2) + ", ";
         for (int i = 0; i < DataTable[index].imports.size() - 2; i++) {
             out_string += QString::number(DataTable[index].imports[i], 'f', 2) + ", ";
         }
         out_string += QString::number(*(DataTable[index].imports.end() - 1), 'f', 2);
     } else if (energy_type == "export") {
+        double sum = std::accumulate(DataTable[index].exports.begin(), DataTable[index].exports.end(), 0.0);
+        out_string += QString::number(sum, 'f', 2) + ", ";
         for (int i = 0; i < DataTable[index].exports.size() - 2; i++) {
             out_string += QString::number(DataTable[index].exports[i], 'f', 2) + ", ";
         }
@@ -155,4 +160,10 @@ bool HHTable::save_hh_table (const QString& csvpath)
     }
 
     return true;
+}
+
+void HHTable::clear()
+{
+    DataTable.clear();
+    SerialNo.clear();
 }

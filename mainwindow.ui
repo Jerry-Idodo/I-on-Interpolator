@@ -22,8 +22,8 @@
    <widget class="QLabel" name="csvLabel">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>60</y>
+      <x>240</x>
+      <y>20</y>
       <width>451</width>
       <height>31</height>
      </rect>
@@ -59,7 +59,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>130</y>
+      <y>70</y>
       <width>200</width>
       <height>31</height>
      </rect>
@@ -76,8 +76,8 @@
    <widget class="QLabel" name="ImportLabel">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>170</y>
+      <x>250</x>
+      <y>190</y>
       <width>451</width>
       <height>31</height>
      </rect>
@@ -94,8 +94,8 @@
    <widget class="QLabel" name="ExportLabel">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>200</y>
+      <x>250</x>
+      <y>220</y>
       <width>451</width>
       <height>31</height>
      </rect>
@@ -181,6 +181,24 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="SaveHHTableButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>120</y>
+      <width>200</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Mulish</family>
+     </font>
+    </property>
+    <property name="text">
+     <string>Save HH Table</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -188,7 +206,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

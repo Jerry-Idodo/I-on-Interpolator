@@ -28,7 +28,7 @@ bool HHTable::create_hh_table (const InterpolatedData& HHData)
         export_data.push_back(HHData.ExportData[i] - HHData.ExportData[i - 1]);
 
         if (HHData.TimeData[i].date() != date) {
-            for (int j = i; j < 49; j++) {
+            for (int j = i+1; j < 49; j++) {
                 Data.imports.push_back(0.0);
                 Data.exports.push_back(0.0);
             }
@@ -49,9 +49,6 @@ bool HHTable::create_hh_table (const InterpolatedData& HHData)
 
     for (i += 1; i < HHData.TimeData.size(); i++) {
         if (HHData.TimeData[i].date() !=date) {
-            import_data.push_back(HHData.ImportData[i] - HHData.ImportData[i - 1]);
-            export_data.push_back(HHData.ExportData[i] - HHData.ExportData[i - 1]);
-
             Data.date = date;
             Data.imports = import_data;
             Data.exports = export_data;
@@ -87,7 +84,7 @@ QString HHTable::remove_file_extension(const QString& filePath)
 
 QString HHTable::print_header_row()
 {
-    QString out_string = "Date, Serial No, Total, ";
+    QString out_string = "Date,Serial No,Total, ";
     QTime hh(0,0,0);
 
     for (int i = 0; i < 47; i++) {
@@ -105,14 +102,14 @@ QString HHTable::print_body_row(int index, const QString& energy_type)
     if (energy_type == "import") {
         double sum = std::accumulate(DataTable[index].imports.begin(), DataTable[index].imports.end(), 0.0);
         out_string += QString::number(sum, 'f', 2) + ", ";
-        for (int i = 0; i < DataTable[index].imports.size() - 2; i++) {
+        for (int i = 0; i < DataTable[index].imports.size() - 1; i++) {
             out_string += QString::number(DataTable[index].imports[i], 'f', 2) + ", ";
         }
         out_string += QString::number(*(DataTable[index].imports.end() - 1), 'f', 2);
     } else if (energy_type == "export") {
         double sum = std::accumulate(DataTable[index].exports.begin(), DataTable[index].exports.end(), 0.0);
         out_string += QString::number(sum, 'f', 2) + ", ";
-        for (int i = 0; i < DataTable[index].exports.size() - 2; i++) {
+        for (int i = 0; i < DataTable[index].exports.size() - 1; i++) {
             out_string += QString::number(DataTable[index].exports[i], 'f', 2) + ", ";
         }
         out_string += QString::number(*(DataTable[index].exports.end() - 1), 'f', 2);
@@ -149,6 +146,7 @@ bool HHTable::save_hh_table (const QString& csvpath)
     QFile exportfile{exportfile_path};
     if (!exportfile.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return false;
+
     }
 
     QTextStream out_export(&exportfile);

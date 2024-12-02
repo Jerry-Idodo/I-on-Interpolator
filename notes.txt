@@ -1,3 +1,9 @@
 handle case where date doesen't exist.
 
 include stringstream
+
+fix wrong total in hhtable
+
+fix extra space in headings (total and serial no) in hhtable
+
+fix extra space in dates and headings in daily table

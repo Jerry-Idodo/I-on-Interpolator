@@ -197,12 +197,12 @@ void InterpolatedData::save_daily_data(const QString& filename)
     }
 
     QTextStream outstream(&outfile);
-    outstream << "Serial Number, Date, Import, Export\n";
+    outstream << "Serial Number,Date,Import,Export\n";
 
     for (int i = 0; i < TimeData.size(); i++) {
         if (TimeData[i].time() == QTime::fromMSecsSinceStartOfDay(0)) {
             QDateTime datetime = TimeData[i].addMSecs(-1);
-            outstream << SerialNo << ", "
+            outstream << SerialNo << ","
                       << datetime.toString("yyyy-MM-dd HH:mm:ss") << ", "
                       << QString::number(ImportData[i], 'f', 2) << ", "
                       << QString::number(ExportData[i], 'f', 2) << '\n';
